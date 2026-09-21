@@ -1,17 +1,10 @@
-import Image from "next/image";
 import { LinkButton } from "@/components/ui/Button";
+import HeroBackground from "@/components/home/HeroBackground";
 
 export default function Hero() {
   return (
     <section className="relative flex min-h-[88vh] items-end overflow-hidden bg-ink sm:min-h-[92vh]">
-      <Image
-        src="/photos/mountain-peaks.jpg"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover opacity-70"
-      />
+      <HeroBackground />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/20" />
       <div className="absolute inset-0 bg-grid bg-repeat opacity-40" aria-hidden="true" />
 

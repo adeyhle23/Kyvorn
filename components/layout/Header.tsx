@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NAV_LINKS } from "@/lib/nav";
 import CartButton from "@/components/cart/CartButton";
 import MobileNav from "@/components/layout/MobileNav";
+import Logo from "@/components/ui/Logo";
 
 export default function Header() {
   return (
@@ -9,9 +10,10 @@ export default function Header() {
       <div className="container-kyvorn flex h-16 items-center justify-between sm:h-20">
         <Link
           href="/"
-          className="flex items-center gap-2 font-headline text-2xl tracking-widest text-bone sm:text-3xl"
+          aria-label="Kyvorn — Home"
+          className="font-headline text-2xl tracking-widest text-bone sm:text-3xl"
         >
-          <span className="text-rust">K</span>YVORN
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">

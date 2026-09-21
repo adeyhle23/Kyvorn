@@ -48,9 +48,26 @@ const config: Config = {
         shimmer: {
           "100%": { transform: "translateX(100%)" },
         },
+        "ken-burns": {
+          "0%": { transform: "scale(1)" },
+          "100%": { transform: "scale(1.12)" },
+        },
+        "crossfade-a": {
+          "0%, 42%": { opacity: "1" },
+          "50%, 92%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "crossfade-b": {
+          "0%, 42%": { opacity: "0" },
+          "50%, 92%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "reveal-up": "reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "ken-burns": "ken-burns 20s ease-in-out infinite alternate",
+        "crossfade-a": "crossfade-a 16s ease-in-out infinite",
+        "crossfade-b": "crossfade-b 16s ease-in-out infinite",
       },
     },
   },

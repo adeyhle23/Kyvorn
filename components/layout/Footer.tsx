@@ -1,6 +1,7 @@
 import Link from "next/link";
 import NewsletterForm from "./NewsletterForm";
 import { InstagramIcon, StravaIcon, TikTokIcon } from "@/components/ui/icons";
+import Logo from "@/components/ui/Logo";
 
 const SHOP_LINKS = [
   { href: "/shop", label: "All Products" },
@@ -27,8 +28,12 @@ export default function Footer() {
     <footer className="border-t border-steel/60 bg-charcoal">
       <div className="container-kyvorn grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:py-20">
         <div className="sm:col-span-2 lg:col-span-1">
-          <Link href="/" className="font-headline text-2xl tracking-widest text-bone">
-            <span className="text-rust">K</span>YVORN
+          <Link
+            href="/"
+            aria-label="Kyvorn — Home"
+            className="font-headline text-2xl tracking-widest text-bone"
+          >
+            <Logo />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-bone-dim">
             Built through adversity. Apparel for the comeback, not the
