@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #e8e6e0;
+}
+
+* {
+  border-color: #3a3a38;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+::selection {
+  background: #c2410c;
+  color: #0a0a0a;
+}
+
+/* Focus states kept visible for keyboard nav against a dark UI */
+:focus-visible {
+  outline: 2px solid #c2410c;
+  outline-offset: 2px;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    background-image: url("/textures/grain.svg");
+    background-size: 220px 220px;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+  }
+}
+
+@layer components {
+  .container-kyvorn {
+    @apply mx-auto w-full max-w-[1400px] px-5 sm:px-8 lg:px-12;
+  }
+}

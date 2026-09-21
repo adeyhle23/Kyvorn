@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <filter id="grain-tee">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="noise" />
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.04 0" />
+    </filter>
+    <pattern id="grid-tee" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#e8e6e0" stroke-width="1" opacity="0.05" />
+    </pattern>
+  </defs>
+  <rect width="800" height="1000" fill="#161616" />
+  <rect width="800" height="1000" fill="url(#grid-tee)" />
+  <rect width="800" height="1000" filter="url(#grain-tee)" />
+  <g transform="translate(400,470)" fill="none" stroke="#c2410c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="0.85">
+    <path d="M-95,-165 L-190,-120 L-165,-45 L-115,-70 L-115,180 L115,180 L115,-70 L165,-45 L190,-120 L95,-165 C 95,-165 65,-130 0,-130 C -65,-130 -95,-165 -95,-165 Z" />
+  </g>
+  <text x="400" y="880" text-anchor="middle" fill="#e8e6e0" font-family="Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="10" opacity="0.9">KYVORN</text>
+  <text x="400" y="915" text-anchor="middle" fill="#a3a099" font-family="Arial, sans-serif" font-size="15" letter-spacing="4" opacity="0.7">SAMPLE — PHOTO PENDING</text>
+</svg>
