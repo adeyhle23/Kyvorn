@@ -28,6 +28,11 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# .env.production is intentionally tracked — it only holds NEXT_PUBLIC_
+# Supabase values, which are safe to expose publicly (access is governed
+# by Row Level Security, not by keeping these values secret).
+!.env.production
+
 # vercel
 .vercel
 
