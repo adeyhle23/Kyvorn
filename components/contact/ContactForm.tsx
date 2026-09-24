@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { submitContactMessage } from "@/lib/supabase/actions";
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "submitted">("idle");
+  const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">(
+    "idle"
+  );
+  const [errorMessage, setErrorMessage] = useState("");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   function handleChange(
@@ -12,14 +16,19 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Stub handler — wire this to a real form endpoint (Formspree, Resend,
-    // a Next.js route handler that sends mail, etc.) before launch. See README.
-    setStatus("submitted");
+    setStatus("pending");
+    const result = await submitContactMessage(form);
+    if (result.success) {
+      setStatus("success");
+    } else {
+      setStatus("error");
+      setErrorMessage(result.error);
+    }
   }
 
-  if (status === "submitted") {
+  if (status === "success") {
     return (
       <div className="border border-steel bg-charcoal px-6 py-10 text-center">
         <p className="font-headline text-2xl uppercase text-bone">
@@ -88,11 +97,19 @@ export default function ContactForm() {
         />
       </div>
 
+      {status === "error" && (
+        <p className="text-sm text-rust-light" role="alert">
+          Something went wrong sending your message: {errorMessage}. Please
+          try again.
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full bg-rust py-4 font-headline text-lg uppercase tracking-wide text-ink transition-colors hover:bg-rust-light sm:w-auto sm:px-10"
+        disabled={status === "pending"}
+        className="w-full bg-rust py-4 font-headline text-lg uppercase tracking-wide text-ink transition-colors hover:bg-rust-light disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:px-10"
       >
-        Send Message
+        {status === "pending" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );

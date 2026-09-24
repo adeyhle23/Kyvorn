@@ -19,6 +19,9 @@ data automatically, no code changes required.
 - Cart mutations run through Next.js Server Actions; cart id (or, in mock
   mode, the whole mock cart) is persisted in a cookie
 - `next/image` for all imagery, including Shopify CDN photos
+- Supabase (`@supabase/supabase-js` + `@supabase/ssr`) backs the contact and
+  newsletter forms — no auth, public insert-only tables via Row Level
+  Security
 
 ## Project structure
 
@@ -49,6 +52,10 @@ lib/
     cart.ts                     Real + mock cart transforms
     actions.ts                   Server Actions (cookie-backed) used by the client cart
     mock-data.ts                  Placeholder catalog, shaped exactly like the real types
+  supabase/
+    client.ts              Browser Supabase client
+    server.ts               Server Supabase client (Server Components/Actions)
+    actions.ts                Server Actions used by the contact + newsletter forms
   utils.ts                cn() + formatMoney()
   categories.ts           Category ↔ tag mapping for /shop filters
   nav.ts                  Shared nav link list
@@ -57,6 +64,8 @@ public/
   photos/                Stock-style atmosphere photography (hero, training)
   products/              Placeholder product art (swapped out by real Shopify photos)
   textures/               Grain/topo/grid SVG textures used in the design system
+supabase/
+  migrations/            SQL migrations (contact_messages, newsletter_subscribers + RLS)
 ```
 
 ## Running locally
@@ -106,6 +115,32 @@ product pages, cart, checkout button state — runs on the mock catalog in
    data — cart mutations create a real Shopify cart, and the drawer's
    Checkout button hands off to Shopify's hosted checkout URL.
 
+## Connecting Supabase (contact + newsletter forms)
+
+The contact form and newsletter signup write to Supabase — no login/auth is
+involved anywhere on the site; every visitor submits as an anonymous user.
+
+1. **Create a Supabase project** at [supabase.com](https://supabase.com) (or
+   use an existing one).
+2. **Run the migration** in `supabase/migrations/` against your project —
+   either paste it into the SQL Editor in the Supabase dashboard, or run it
+   with the Supabase CLI (`supabase db push`) if you have the project linked.
+   It creates two tables, `contact_messages` and `newsletter_subscribers`,
+   each with Row Level Security enabled and a policy that allows `insert`
+   for anyone (`anon`/`authenticated`) but no `select`/`update`/`delete` —
+   so the public API can accept submissions but can't read them back. Read
+   submissions from the Supabase dashboard's Table Editor (which uses the
+   service role and bypasses RLS).
+3. **Fill in environment variables** in `.env.local` (**Project Settings →
+   API** in the dashboard):
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxxxxx
+   ```
+   The publishable key is safe to expose client-side by design — table
+   access is governed by the RLS policies above, not by keeping this key
+   secret. Restart the dev server after changing env vars.
+
 ## Deploying to Vercel
 
 1. Push this repo to GitHub/GitLab/Bitbucket.
@@ -121,15 +156,11 @@ product pages, cart, checkout button state — runs on the mock catalog in
   art, not real garments — each is clearly labeled "Sample — Photo Pending"
   in the corner. Real photos arrive automatically once products with
   Shopify-hosted images are connected.
-- **Social proof photos** on the homepage (race/finisher shots) are styled
-  placeholder blocks marked "Photo Pending" — swap `components/home/SocialProof.tsx`
-  once real race photography exists.
-- **Newsletter and contact forms** are functional client-side stubs (they
-  confirm submission in the UI) but aren't wired to a real email service
-  yet. Hook `components/layout/NewsletterForm.tsx` up to Shopify's
-  `customerCreate` mutation or an ESP (Klaviyo, Mailchimp), and
-  `components/contact/ContactForm.tsx` up to a form backend (a Next.js
-  route handler that sends mail, Formspree, Resend, etc.) before launch.
+- **Newsletter and contact forms** persist real submissions to Supabase (see
+  "Connecting Supabase" above) but nothing currently *notifies* anyone of a
+  new row — no email/Slack alert is sent. Either poll the tables from the
+  Supabase dashboard, or add a Supabase Database Webhook / a scheduled
+  digest before relying on this for real support inquiries.
 - **Brand assets** in `public/brand/` are the real Kyvorn logo lockups
   supplied for this build (the spine/hardware "K" mark, the mountain-peak
   "K" mark, and wordmark variants) — no placeholder logos were used.
