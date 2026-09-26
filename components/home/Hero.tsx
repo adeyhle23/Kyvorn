@@ -19,9 +19,8 @@ export default function Hero() {
           The Ground Up
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-bone-dim sm:text-lg">
-          One fractured vertebra. One week that couldn&apos;t stand. Then a
-          sprint triathlon, a marathon, and an ultramarathon back. Kyvorn is
-          what&apos;s left when the excuses run out.
+          Built for those who have been tested, broken down, and came back
+          anyway.
         </p>
         <div className="mt-9 flex flex-wrap gap-4">
           <LinkButton href="/shop" size="lg">
